@@ -1,1 +1,3 @@
 # Advent-of-code-2024
+
+-   First day, php was chosen...
