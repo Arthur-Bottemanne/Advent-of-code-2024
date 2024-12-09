@@ -5,6 +5,8 @@
 -   Third day is for rust! finally an actual programming language.
 -   Fourth day is Java, barely touched it so we'll see how it goes.
 
+-   Eighth day is php
+
 # Roulette
 
 Advent of code roulette:
@@ -22,4 +24,5 @@ JavaScript
 php
 Ruby
 Rust
+Ziggs
 ```
