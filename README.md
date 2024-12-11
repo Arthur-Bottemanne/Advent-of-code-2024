@@ -1,5 +1,9 @@
 # Advent-of-code-2024
 
+I gave up on my original idea of using a random language per day. I wasn't really motivated to do the AoC like this. I'll do the rest in rust since I am original :)
+
+---
+
 -   First day, php was chosen...
 -   For the second day, C was the chosen one...
 -   Third day is for rust! finally an actual programming language.
@@ -24,5 +28,5 @@ JavaScript
 php
 Ruby
 Rust
-Ziggs
+Zig
 ```
