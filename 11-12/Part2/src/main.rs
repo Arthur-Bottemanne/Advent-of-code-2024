@@ -1,4 +1,5 @@
 use std::{fs, vec};
+use std::collections::HashMap;
 
 fn split_int_in_half(num: u64) -> Vec<u64> {
     let num_str = num.to_string();
@@ -11,22 +12,37 @@ fn split_int_in_half(num: u64) -> Vec<u64> {
     return vec![first_half.parse::<u64>().unwrap(), second_half.parse::<u64>().unwrap()];
 }
 
-fn blink(mut stone: u64, iteration: u32) -> Vec<u64> {
-    let mut result = vec![0];
+fn blink(mut stone: u64, memo: &mut HashMap<(u64, u32), Vec<u64>>, iteration: u32) -> Vec<u64> {
+    if iteration == 0 {
+        return vec![stone];
+    }
 
-    if stone == 0 {
-        stone = 1;
-        result = vec![stone];
+    if let Some(result) = memo.get(&(stone, iteration)) {
+        println!("Memoized result for stone {}: {:?}", stone, result);
+
+        return result.clone();
+    }
+
+    let next_stones = if stone == 0 {
+        vec![1]
     }
     else if stone.to_string().len() % 2 == 0 {
-        result = split_int_in_half(stone);
+        split_int_in_half(stone)
     }
     else {
-        stone *= 2024;
-        result = vec![stone];
-    }
+        vec![stone * 2024]
+    };
 
-    return result;
+    let recursive_result: Vec<u64> = next_stones
+        .iter()
+        .flat_map(|&s| blink(s, memo, iteration - 1))
+        .collect();
+    
+    //println!("Iteration {}: stone {}, recursive_result {:?}", iteration, stone, recursive_result);
+
+    memo.insert((stone, iteration), recursive_result.clone());
+
+    recursive_result
 }
 
 fn main() {
@@ -38,20 +54,16 @@ fn main() {
         .split(" ")
         .filter_map(|s| s.parse::<u64>().ok())
         .collect();
+
+    let mut memo: HashMap<(u64, u32), Vec<u64>> = HashMap::new();
+
+    let mut result = 0;
     
-    for i in 0..75 {
-        let mut new_stones = vec![];
-
-        for stone in stones {
-            new_stones.extend(blink(stone));
-        }
-
-        stones = new_stones;
-
-        println!("iteration : {}", i + 1);
-        println!("count : {}", stones.len());
+    for stone in stones {
+        result += blink(stone, &mut memo, 45).len();
+        println!("finished with a stone");
     }
     
     println!("result");
-    println!("count : {}", stones.len());
+    println!("count : {}", result);
 }
